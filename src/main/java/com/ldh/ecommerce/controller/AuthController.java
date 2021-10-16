@@ -6,11 +6,15 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 
+import com.ldh.ecommerce.model.ERole;
+import com.ldh.ecommerce.model.Role;
+import com.ldh.ecommerce.model.User;
 import com.ldh.ecommerce.repository.RoleRepository;
 import com.ldh.ecommerce.repository.UserRepository;
 import com.ldh.ecommerce.request.LoginRequest;
 import com.ldh.ecommerce.request.SignupRequest;
 import com.ldh.ecommerce.response.JwtResponse;
+import com.ldh.ecommerce.response.MessageResponse;
 import com.ldh.ecommerce.security.UserDetailsImpl;
 import com.ldh.ecommerce.security.jwt.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,11 +50,11 @@ public class AuthController {
     @Autowired
     JwtUtils jwtUtils;
 
-    @PostMapping("/signin")
+    @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
 
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUserName(), loginRequest.getPassWord()));
+                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
@@ -63,7 +67,7 @@ public class AuthController {
         return ResponseEntity.ok(new JwtResponse(jwt));
     }
 
-    @PostMapping("/signup")
+    @PostMapping("/register")
     public ResponseEntity<?> registerUser( @RequestBody SignupRequest signUpRequest) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
@@ -86,26 +90,26 @@ public class AuthController {
         Set<Role> roles = new HashSet<>();
 
         if (strRoles == null) {
-            Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+            Role userRole = roleRepository.findByName(ERole.USER)
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(userRole);
         } else {
             strRoles.forEach(role -> {
                 switch (role) {
                     case "admin":
-                        Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
+                        Role adminRole = roleRepository.findByName(ERole.ADMIN)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(adminRole);
 
                         break;
-                    case "mod":
-                        Role modRole = roleRepository.findByName(ERole.ROLE_MODERATOR)
+                    case "shop_boss":
+                        Role modRole = roleRepository.findByName(ERole.BOSS_SHOP)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(modRole);
 
                         break;
                     default:
-                        Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+                        Role userRole = roleRepository.findByName(ERole.USER)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(userRole);
                 }

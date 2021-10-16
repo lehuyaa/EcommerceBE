@@ -1,23 +1,53 @@
 package com.ldh.ecommerce.request;
 
 public class LoginRequest {
+    private String username;
+    private String password;
 
-    private String userName;
-    private String passWord;
-
-    public String getUserName() {
-        return userName;
+    /**
+     * Create an empty LoginRequest object
+     */
+    public LoginRequest() {
+        super();
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    /**
+     * Create a LoginRequest object with full attributes
+     *
+     * @param username user's user name
+     * @param password
+     */
+    public LoginRequest(String username, String password) {
+        super();
+        this.username = username;
+        this.password = password;
     }
 
-    public String getPassWord() {
-        return passWord;
+    /**
+     * @return the username
+     */
+    public String getUsername() {
+        return username;
     }
 
-    public void setPassWord(String passWord) {
-        this.passWord = passWord;
+    /**
+     * @param username the username to set
+     */
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    /**
+     * @return the password
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * @param password the password to set
+     */
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
