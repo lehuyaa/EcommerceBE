@@ -13,11 +13,13 @@ import com.ldh.ecommerce.repository.RoleRepository;
 import com.ldh.ecommerce.repository.UserRepository;
 import com.ldh.ecommerce.request.LoginRequest;
 import com.ldh.ecommerce.request.SignupRequest;
+import com.ldh.ecommerce.response.CommonResponse;
 import com.ldh.ecommerce.response.JwtResponse;
 import com.ldh.ecommerce.response.MessageResponse;
 import com.ldh.ecommerce.security.UserDetailsImpl;
 import com.ldh.ecommerce.security.jwt.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -51,7 +53,7 @@ public class AuthController {
     JwtUtils jwtUtils;
 
     @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
+    public CommonResponse authenticateUser(@RequestBody LoginRequest loginRequest) {
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
@@ -64,21 +66,18 @@ public class AuthController {
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
 
-        return ResponseEntity.ok(new JwtResponse(jwt));
+        return new CommonResponse(HttpStatus.CONFLICT,new MessageResponse("Login Successful"),new JwtResponse(jwt));
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser( @RequestBody SignupRequest signUpRequest) {
+    public CommonResponse registerUser( @RequestBody SignupRequest signUpRequest) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Username is already taken!"));
+            return new CommonResponse(HttpStatus.CONFLICT,new MessageResponse("Error: Username is already taken!"),null);
         }
 
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Email is already in use!"));
+            return new CommonResponse(HttpStatus.CONFLICT,new MessageResponse("Error: Email is already in use!\""),null);
+
         }
 
         // Create new user's account
@@ -118,7 +117,6 @@ public class AuthController {
 
         user.setRoles(roles);
         userRepository.save(user);
-
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+        return new CommonResponse(HttpStatus.OK,new MessageResponse("User registered successfully!"),null);
     }
 }
