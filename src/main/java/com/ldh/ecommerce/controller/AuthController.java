@@ -66,7 +66,7 @@ public class AuthController {
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
 
-        return new CommonResponse(HttpStatus.CONFLICT,new MessageResponse("Login Successful"),new JwtResponse(jwt));
+        return new CommonResponse(HttpStatus.CONFLICT,new MessageResponse("Login Successful"),new JwtResponse(jwt,userDetails));
     }
 
     @PostMapping("/register")
