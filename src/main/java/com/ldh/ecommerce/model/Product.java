@@ -3,10 +3,13 @@ package com.ldh.ecommerce.model;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import org.hibernate.search.annotations.*;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "Product")
+@Indexed
 public class Product {
 
     @Id
@@ -14,6 +17,7 @@ public class Product {
     private Long id;
 
     @Column(name = "productName")
+    @Field(termVector = TermVector.YES)
     private String productName;
 
     @Column(name = "productPrice")

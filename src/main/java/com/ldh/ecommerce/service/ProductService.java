@@ -8,4 +8,5 @@ import java.util.List;
 public interface ProductService {
 
     List<Product> getAllProduct();
+    List<Product> searchProduct(String searchKey);
 }
