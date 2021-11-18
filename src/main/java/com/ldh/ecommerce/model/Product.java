@@ -33,18 +33,31 @@ public class Product {
     @ToString.Exclude
     private Category category;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private User user;
 
     public Product() {
     }
 
-    public Product(Long id, String productName, String productPrice, String productImage, Category category) {
+    public Product(Long id, String productName, String productPrice, String productImage, Category category, User user) {
         this.id = id;
         this.productName = productName;
         this.productPrice = productPrice;
         this.productImage = productImage;
         this.category = category;
+        this.user = user;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public Long getId() {
         return id;
