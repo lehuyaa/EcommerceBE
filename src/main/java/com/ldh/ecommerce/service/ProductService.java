@@ -9,4 +9,6 @@ public interface ProductService {
 
     List<Product> getAllProduct();
     List<Product> searchProduct(String searchKey);
+    List<Product> getByUserId(Long userId);
+    List<Product> getByCategoryId(Long categoryId);
 }

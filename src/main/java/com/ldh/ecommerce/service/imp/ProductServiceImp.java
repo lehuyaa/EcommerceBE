@@ -58,4 +58,18 @@ public class ProductServiceImp implements ProductService {
                 = fullTextEntityManager.createFullTextQuery(query, Product.class);
         return jpaQuery.getResultList();
     }
+
+    @Override
+    public List<Product> getByUserId(Long userId) {
+        products.clear();
+        products = productRepository.findAllByUserId(userId);
+        return products;
+    }
+
+    @Override
+    public List<Product> getByCategoryId(Long categoryId) {
+        products.clear();
+        products = productRepository.findAllByCategoryId(categoryId);
+        return products;
+    }
 }
