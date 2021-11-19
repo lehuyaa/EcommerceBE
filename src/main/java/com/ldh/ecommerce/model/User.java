@@ -42,6 +42,7 @@ public class User {
     @Column(name = "phonenumber")
     private String phoneNumber;
 
+
     public String getFirstName() {
         return firstName;
     }
@@ -87,6 +88,7 @@ public class User {
         this.firstName = firstName;
         this.lastName = lastName;
     }
+
 
     public Long getId() {
         return id;

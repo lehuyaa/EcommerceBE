@@ -18,6 +18,7 @@ public class CategoryServiceImp implements CategoryService {
     public List<Category> categories = new ArrayList<>();
     @Override
     public List<Category> getAllCategory() {
+        categories.clear();
         categories = categoryRepository.findAll();
         return categories;
     }

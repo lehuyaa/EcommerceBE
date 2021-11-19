@@ -33,6 +33,7 @@ public class ProductServiceImp implements ProductService {
 
     @Override
     public List<Product> getAllProduct() {
+        products.clear();
         products = productRepository.findAll();
         return products;
     }
