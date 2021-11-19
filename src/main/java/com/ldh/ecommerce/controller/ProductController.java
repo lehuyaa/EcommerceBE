@@ -40,10 +40,10 @@ public class ProductController {
     private EntityManager entityManager;
 
 
-    @GetMapping("/searchProduct")
-    public CommonResponse searchProduct (@RequestBody String searchKey) {
-        return new CommonResponse(HttpStatus.OK,new MessageResponse(""), productServiceImp.searchProduct(searchKey));
-    }
+//    @GetMapping("/searchProduct")
+//    public CommonResponse searchProduct (@RequestBody String searchKey) {
+//        return new CommonResponse(HttpStatus.OK,new MessageResponse(""), productServiceImp.searchProduct(searchKey));
+//    }
 
     @PostMapping("/addProduct")
     public CommonResponse addProduct(@RequestBody AddProductRequest addProductRequest) {
