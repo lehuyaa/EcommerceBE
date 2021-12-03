@@ -35,8 +35,14 @@ public class Product {
     @ToString.Exclude
     private User user;
 
+    @Column(name = "quantity")
+    private Long quantity;
+
+    @Column(name = "rate")
+    private Long rate;
     public Product() {
     }
+
 
     public Product(Long id, String productName, String productPrice, String productImage, Category category, User user) {
         this.id = id;
@@ -45,6 +51,22 @@ public class Product {
         this.productImage = productImage;
         this.category = category;
         this.user = user;
+    }
+
+    public Long getQuantity() {
+        return quantity;
+    }
+
+    public Long getRate() {
+        return rate;
+    }
+
+    public void setRate(Long rate) {
+        this.rate = rate;
+    }
+
+    public void setQuantity(Long quantity) {
+        this.quantity = quantity;
     }
 
     public User getUser() {
