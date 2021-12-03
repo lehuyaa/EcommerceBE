@@ -12,6 +12,7 @@ import com.ldh.ecommerce.request.OrderRequest;
 import com.ldh.ecommerce.request.ProductOrderRequest;
 import com.ldh.ecommerce.response.CommonResponse;
 import com.ldh.ecommerce.response.MessageResponse;
+import com.ldh.ecommerce.service.imp.OrderServiceImp;
 import com.ldh.ecommerce.service.imp.PaymentMethodServiceImp;
 import com.ldh.ecommerce.service.imp.StatusOrderImp;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +30,11 @@ public class OrderController {
     @Autowired
     public PaymentMethodServiceImp paymentMethodServiceImp = new PaymentMethodServiceImp();
 
+    @Autowired
     public StatusOrderImp statusOrderImp = new StatusOrderImp();
 
+    @Autowired
+    public OrderServiceImp orderServiceImp = new OrderServiceImp();
     @Autowired
     public OrderDetailsRepository orderDetailsRepository;
 
@@ -45,6 +49,11 @@ public class OrderController {
     @GetMapping("/getAllStatusOrder")
     public CommonResponse getAllStatusOrder () {
         return new CommonResponse(HttpStatus.OK,new MessageResponse(""), statusOrderImp.getAll());
+    }
+
+    @GetMapping("/getOrderByUserId/{userId}")
+    public CommonResponse getOrderByUserId (@PathVariable("userId") Long userId) {
+        return new CommonResponse(HttpStatus.OK,new MessageResponse(""), orderServiceImp.getAllOrderByUserId(userId));
     }
 
     @PostMapping("/order")
