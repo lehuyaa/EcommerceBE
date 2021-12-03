@@ -59,6 +59,8 @@ public class ProductController {
             product.setProductImage(addProductRequest.getProduct_image());
             product.setCategory(categoryRepository.findById(addProductRequest.getCategory_id()).get());
             product.setUser(userRepository.findById(addProductRequest.getUser_id()).get());
+            product.setQuantity(addProductRequest.getQuantity());
+            product.setRate(0L);
             productRepository.save(product);
 
             return new CommonResponse(HttpStatus.OK, new MessageResponse("SCUCESS"), null);
@@ -79,6 +81,7 @@ public class ProductController {
             product.setProductImage(addProductRequest.getProduct_image());
             product.setCategory(categoryRepository.findById(addProductRequest.getCategory_id()).get());
             product.setUser(userRepository.findById(addProductRequest.getUser_id()).get());
+            product.setQuantity(addProductRequest.getQuantity());
             productRepository.save(product);
 
             return new CommonResponse(HttpStatus.OK, new MessageResponse("SCUCESS"), null);
@@ -106,6 +109,14 @@ public class ProductController {
             return new CommonResponse(HttpStatus.BAD_REQUEST, new MessageResponse("FAILURE"), null);
         }
         return new CommonResponse(HttpStatus.OK, new MessageResponse("SUCESS"), productServiceImp.getByCategoryId(categoryId));
+    }
+
+    @PutMapping("/updateRateProduct/{idProduct}")
+    public CommonResponse updateRateProduct(@PathVariable("idProduct") Long idProduct) {
+            Product product = productRepository.findById(idProduct).get();
+            product.setRate(product.getRate() + 1000);
+            productRepository.save(product);
+            return new CommonResponse(HttpStatus.OK, new MessageResponse("SCUCESS"), null);
     }
 
 }

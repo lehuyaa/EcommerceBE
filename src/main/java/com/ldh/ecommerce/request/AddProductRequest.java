@@ -7,7 +7,15 @@ public class AddProductRequest {
     private String product_price;
     private Long category_id;
     private Long user_id;
+    private Long quantity;
 
+    public Long getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Long quantity) {
+        this.quantity = quantity;
+    }
 
     public String getProduct_image() {
         return product_image;
