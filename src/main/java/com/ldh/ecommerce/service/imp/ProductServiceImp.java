@@ -39,33 +39,12 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public List<Product> searchProduct(String searchKey) {
-        FullTextEntityManager fullTextEntityManager
-                = Search.getFullTextEntityManager(entityManager);
-
-        QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory()
-                .buildQueryBuilder()
-                .forEntity(Product.class)
-                .get();
-
-
-
-        org.apache.lucene.search.Query query = queryBuilder
-                .keyword()
-                .onFields("productName")
-                .matching(searchKey)
-                .createQuery();
-        org.hibernate.search.jpa.FullTextQuery jpaQuery
-                = fullTextEntityManager.createFullTextQuery(query, Product.class);
-        return jpaQuery.getResultList();
-    }
-
-    @Override
     public List<Product> getByUserId(Long userId) {
         products.clear();
         products = productRepository.findAllByUserId(userId);
         return products;
     }
+
 
     @Override
     public List<Product> getByCategoryId(Long categoryId) {

@@ -1,11 +1,16 @@
 package com.ldh.ecommerce.model;
 
+import com.sun.istack.internal.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.Store;
 
 import javax.persistence.*;
 
 @Entity
+@Indexed
 @Table(name = "Product")
 public class Product {
 
@@ -13,6 +18,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Field
     @Column(name = "productName")
     private String productName;
 

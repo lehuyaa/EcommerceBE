@@ -22,4 +22,11 @@ public class OrderServiceImp implements OrderService {
         orderList = orderRepository.findAllByUserId(userId);
         return orderList;
     }
+
+    @Override
+    public List<Order> getAllOrderBySellerId(Long sellerId) {
+        orderList.clear();
+        orderList = orderRepository.findAllBySellerId(sellerId);
+        return orderList;
+    }
 }
