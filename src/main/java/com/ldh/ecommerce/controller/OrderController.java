@@ -56,6 +56,11 @@ public class OrderController {
         return new CommonResponse(HttpStatus.OK,new MessageResponse(""), orderServiceImp.getAllOrderByUserId(userId));
     }
 
+    @GetMapping("/getOrderBySellerId/{sellerId}")
+    public CommonResponse getOrderBySellerId (@PathVariable("sellerId") Long sellerId) {
+        return new CommonResponse(HttpStatus.OK,new MessageResponse(""), orderServiceImp.getAllOrderBySellerId(sellerId));
+    }
+
     @PostMapping("/order")
     public CommonResponse order(@RequestBody OrderRequest orderRequest) {
         StatusOrder statusOrder = new StatusOrder(1L,"Packing");

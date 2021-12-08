@@ -8,6 +8,7 @@ import com.ldh.ecommerce.repository.UserRepository;
 import com.ldh.ecommerce.request.AddProductRequest;
 import com.ldh.ecommerce.response.CommonResponse;
 import com.ldh.ecommerce.response.MessageResponse;
+import com.ldh.ecommerce.search.ProductSearch;
 import com.ldh.ecommerce.service.imp.ProductServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -40,11 +43,21 @@ public class ProductController {
     private EntityManager entityManager;
 
 
-//    @GetMapping("/searchProduct")
-//    public CommonResponse searchProduct (@RequestBody String searchKey) {
-//        return new CommonResponse(HttpStatus.OK,new MessageResponse(""), productServiceImp.searchProduct(searchKey));
-//    }
+    @Autowired
+    private ProductSearch productSearch;
 
+
+    @GetMapping("/search/{searchKey}")
+    public List<Product> search(@PathVariable("searchKey") String searchKey) {
+        List<Product> searchResults = new ArrayList<>();
+        try {
+            searchResults = productRepository.searchByName(searchKey.replace(' ', '&'));
+        }
+        catch (Exception ex) {
+        }
+
+        return searchResults;
+    }
     @PostMapping("/addProduct")
     public CommonResponse addProduct(@RequestBody AddProductRequest addProductRequest) {
 
