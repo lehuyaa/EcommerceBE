@@ -48,7 +48,7 @@ public class ProductController {
 
 
     @GetMapping("/search/{searchKey}")
-    public List<Product> search(@PathVariable("searchKey") String searchKey) {
+    public CommonResponse search(@PathVariable("searchKey") String searchKey) {
         List<Product> searchResults = new ArrayList<>();
         try {
             searchResults = productRepository.searchByName(searchKey.replace(' ', '&'));
@@ -56,7 +56,7 @@ public class ProductController {
         catch (Exception ex) {
         }
 
-        return searchResults;
+        return new CommonResponse(HttpStatus.OK, new MessageResponse("SUCCESS"), searchResults);
     }
     @PostMapping("/addProduct")
     public CommonResponse addProduct(@RequestBody AddProductRequest addProductRequest) {
