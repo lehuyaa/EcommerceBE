@@ -8,6 +8,7 @@ import com.ldh.ecommerce.repository.UserRepository;
 import com.ldh.ecommerce.request.AddProductRequest;
 import com.ldh.ecommerce.response.CommonResponse;
 import com.ldh.ecommerce.response.MessageResponse;
+import com.ldh.ecommerce.response.ProfileUserResponse;
 import com.ldh.ecommerce.search.ProductSearch;
 import com.ldh.ecommerce.service.imp.ProductServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,8 +115,20 @@ public class ProductController {
         if (userRepository.findById(userId).get() == null) {
             return new CommonResponse(HttpStatus.BAD_REQUEST, new MessageResponse("FAILURE"), null);
         }
+
         return new CommonResponse(HttpStatus.OK, new MessageResponse("SUCCESS"), productServiceImp.getByUserId(userId));
     }
+
+    @GetMapping("/getProfileByUserId/{userId}")
+    public CommonResponse getProfileByUserId(@PathVariable("userId") Long userId) {
+        if (userRepository.findById(userId).get() == null) {
+            return new CommonResponse(HttpStatus.BAD_REQUEST, new MessageResponse("FAILURE"), null);
+        }
+        ProfileUserResponse profileUserResponse = new ProfileUserResponse(userRepository.findById(userId).get(),productServiceImp.getByUserId(userId));
+
+        return new CommonResponse(HttpStatus.OK, new MessageResponse("SUCCESS"),profileUserResponse);
+    }
+    
     @GetMapping("/getByCategoryId/{categoryId}")
     public CommonResponse getByCategoryId(@PathVariable("categoryId") Long categoryId) {
         if (categoryRepository.findById(categoryId).get() == null) {
