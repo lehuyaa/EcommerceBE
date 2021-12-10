@@ -2,6 +2,7 @@ package com.ldh.ecommerce.controller;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -65,8 +66,8 @@ public class AuthController {
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
-
-        return new CommonResponse(HttpStatus.CONFLICT,new MessageResponse("Login Successful"),new JwtResponse(jwt,userDetails));
+        User user = userRepository.findById(userDetails.getId()).get();
+        return new CommonResponse(HttpStatus.CONFLICT,new MessageResponse("Login Successful"),new JwtResponse(jwt,user));
     }
 
     @PostMapping("/register")

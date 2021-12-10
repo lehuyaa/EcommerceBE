@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    @Query(value="select * from product p where p.user_id= :userId", nativeQuery=true)
+    @Query(value="select * from product p where p.user_id= :userId ORDER BY p.rate DESC", nativeQuery=true)
     List<Product> findAllByUserId(Long userId);
 
     @Query(value="select * from product p where p.category_id= :categoryId", nativeQuery=true)

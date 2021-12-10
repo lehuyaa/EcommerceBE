@@ -1,28 +1,29 @@
 package com.ldh.ecommerce.response;
 
 
+import com.ldh.ecommerce.model.User;
 import com.ldh.ecommerce.security.UserDetailsImpl;
 
 public class JwtResponse {
 
     private String token;
     private String type = "Bearer";
-    private UserDetailsImpl user;
+    private User user;
 
     public JwtResponse(String token) {
         this.token = token;
     }
 
-    public JwtResponse(String token, UserDetailsImpl user) {
+    public JwtResponse(String token, User user) {
         this.token = token;
         this.user = user;
     }
 
-    public UserDetailsImpl getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(UserDetailsImpl user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
