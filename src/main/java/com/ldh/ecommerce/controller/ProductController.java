@@ -2,10 +2,14 @@ package com.ldh.ecommerce.controller;
 
 
 import com.ldh.ecommerce.model.Product;
+import com.ldh.ecommerce.model.Review;
+import com.ldh.ecommerce.model.User;
 import com.ldh.ecommerce.repository.CategoryRepository;
 import com.ldh.ecommerce.repository.ProductRepository;
+import com.ldh.ecommerce.repository.ReviewRepository;
 import com.ldh.ecommerce.repository.UserRepository;
 import com.ldh.ecommerce.request.AddProductRequest;
+import com.ldh.ecommerce.request.ReviewRequest;
 import com.ldh.ecommerce.response.CommonResponse;
 import com.ldh.ecommerce.response.MessageResponse;
 import com.ldh.ecommerce.response.ProfileUserResponse;
@@ -34,11 +38,16 @@ public class ProductController {
 
     @Autowired
     public CategoryRepository categoryRepository;
+
+    @Autowired
+    public ReviewRepository reviewRepository;
     @Autowired
     public ProductRepository productRepository;
-    @GetMapping("/getAllProduct")
-    public CommonResponse getAllProduct () {
-        return new CommonResponse(HttpStatus.OK,new MessageResponse(""), productServiceImp.getAllProduct());
+
+
+    @GetMapping("/getAllProduct/{pageNo}")
+    public CommonResponse getAllProduct (@PathVariable int pageNo) {
+        return new CommonResponse(HttpStatus.OK,new MessageResponse(""), productServiceImp.getAllProduct(pageNo));
     }
     @Autowired
     private EntityManager entityManager;
@@ -98,7 +107,7 @@ public class ProductController {
             product.setQuantity(addProductRequest.getQuantity());
             productRepository.save(product);
 
-            return new CommonResponse(HttpStatus.OK, new MessageResponse("SCUCESS"), null);
+            return new CommonResponse(HttpStatus.OK, new MessageResponse("SUCCESS"), null);
 
         }
 
@@ -143,6 +152,57 @@ public class ProductController {
             product.setRate(product.getRate() + 1000);
             productRepository.save(product);
             return new CommonResponse(HttpStatus.OK, new MessageResponse("SUCCESS"), null);
+    }
+
+    @GetMapping("/getReviewByProductId/{productId}")
+    public CommonResponse getReviewByProductId(@PathVariable("productId") Long productId) {
+        if (categoryRepository.findById(productId).get() == null) {
+            return new CommonResponse(HttpStatus.BAD_REQUEST, new MessageResponse("FAILURE"), null);
+        }
+        return new CommonResponse(HttpStatus.OK, new MessageResponse("SUCCESS"), reviewRepository.findAllByProductId(productId));
+    }
+
+    @PostMapping("/addReview")
+    public CommonResponse addReview(@RequestBody ReviewRequest reviewRequest) {
+
+        if (reviewRequest == null) {
+            return new CommonResponse(HttpStatus.BAD_REQUEST, new MessageResponse("FAILURE"),null);
+        } else {
+
+            Review review = new Review();
+            User user = userRepository.findById(reviewRequest.getUserId()).get();
+            Product product = productRepository.findById(reviewRequest.getProductId()).get();
+            switch ( reviewRequest.getStarNumber() ) {
+                case  1:
+                    // Làm gì đó tại đây ...
+                    product.setRate(product.getRate() - 50L);
+                    break;
+                case  2:
+                    product.setRate(product.getRate() - 40L);
+                    // Làm gì đó tại đây ...
+                    break;
+                case  3:
+                    product.setRate(product.getRate() + 10L);
+                    // Làm gì đó tại đây ...
+                    break;
+                case 4:
+                    product.setRate(product.getRate() + 50L);
+                    // Làm gì đó tại đây ...
+                    break;
+                default:
+                    product.setRate(product.getRate() + 80L);
+                    // Làm gì đó tại đây ...
+            }
+            review.setContent(reviewRequest.getContent());
+            review.setProductId(reviewRequest.getProductId());
+            review.setCreatedTime(reviewRequest.getCreatedTime());
+            review.setStarNumber(reviewRequest.getStarNumber());
+            review.setUser(user);
+
+            reviewRepository.save(review);
+            return new CommonResponse(HttpStatus.OK, new MessageResponse("SUCCESS"), null);
+
+        }
     }
 
 }
