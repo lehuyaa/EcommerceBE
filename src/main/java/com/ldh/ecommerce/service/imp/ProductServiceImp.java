@@ -4,13 +4,13 @@ import com.ldh.ecommerce.model.Product;
 import com.ldh.ecommerce.repository.ProductRepository;
 import com.ldh.ecommerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.hibernate.search.jpa.FullTextEntityManager;
-import org.hibernate.search.jpa.Search;
-import org.hibernate.search.query.dsl.QueryBuilder;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -32,10 +32,13 @@ public class ProductServiceImp implements ProductService {
 
 
     @Override
-    public List<Product> getAllProduct() {
-        products.clear();
-        products = productRepository.findAll();
-        return products;
+    public List<Product> getAllProduct(int pageNo) {
+
+
+        Pageable paging=PageRequest.of(pageNo, 15) ;
+        Page<Product> pagedResult = productRepository.findAll(paging);
+
+        return pagedResult.getContent();
     }
 
     @Override
