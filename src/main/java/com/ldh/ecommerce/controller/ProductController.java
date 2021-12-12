@@ -156,9 +156,6 @@ public class ProductController {
 
     @GetMapping("/getReviewByProductId/{productId}")
     public CommonResponse getReviewByProductId(@PathVariable("productId") Long productId) {
-        if (categoryRepository.findById(productId).get() == null) {
-            return new CommonResponse(HttpStatus.BAD_REQUEST, new MessageResponse("FAILURE"), null);
-        }
         return new CommonResponse(HttpStatus.OK, new MessageResponse("SUCCESS"), reviewRepository.findAllByProductId(productId));
     }
 
