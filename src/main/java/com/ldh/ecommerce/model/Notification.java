@@ -13,6 +13,9 @@ public class Notification {
     private String content;
     private Long ideReceiver;
     private int type;
+    private String createTime;
+
+
 
 
     public Notification() {
@@ -20,6 +23,14 @@ public class Notification {
 
     public Long getId() {
         return id;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
     }
 
     public void setId(Long id) {

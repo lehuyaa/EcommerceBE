@@ -19,8 +19,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -209,6 +212,9 @@ public class ProductController {
         notification.setTitle("Update Rate Product");
         notification.setContent("Request Update Rate for ProductId:" + productId);
         notification.setType(1);
+        LocalDateTime ldt = LocalDateTime.now();
+        String createTime = DateTimeFormatter.ofPattern("MM-dd-yyyy", Locale.ENGLISH).format(ldt);
+        notification.setCreateTime(createTime);
         notificationRepository.save(notification);
         return new CommonResponse(HttpStatus.OK, new MessageResponse("SUCCESS"), null);
 
