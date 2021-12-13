@@ -6,6 +6,7 @@ import com.ldh.ecommerce.model.Product;
 import com.ldh.ecommerce.model.StatusOrder;
 import com.ldh.ecommerce.repository.OrderDetailsRepository;
 import com.ldh.ecommerce.repository.OrderRepository;
+import com.ldh.ecommerce.repository.ProductRepository;
 import com.ldh.ecommerce.request.AddProductRequest;
 import com.ldh.ecommerce.request.OrderItemRequest;
 import com.ldh.ecommerce.request.OrderRequest;
@@ -38,6 +39,8 @@ public class OrderController {
     @Autowired
     public OrderDetailsRepository orderDetailsRepository;
 
+    @Autowired
+    public ProductRepository productRepository;
     @Autowired
     public OrderRepository orderRepository;
 
@@ -88,5 +91,29 @@ public class OrderController {
            orderRepository.save(order);
        }
         return new CommonResponse(HttpStatus.OK,new MessageResponse("ORDER SUCCESS"), null);
+    }
+    @PutMapping("/updateOrderShop/{orderId}")
+    public CommonResponse updateOrderShop(@PathVariable("orderId") Long orderId) {
+
+      Order order = orderRepository.findById(orderId).get();
+      order.setStatusOrder( new StatusOrder(2L,"Shipping"));
+        orderRepository.save(order);
+        return new CommonResponse(HttpStatus.OK,new MessageResponse("SUCCESS"), null);
+
+    }
+    @PutMapping("/updateOrderUser/{orderId}")
+    public CommonResponse updateOrderUser(@PathVariable("orderId") Long orderId) {
+
+        Order order = orderRepository.findById(orderId).get();
+        order.setStatusOrder( new StatusOrder(3L,"Success"));
+        orderRepository.save(order);
+        List<OrderDetails> listOrderDetails = order.getOrderDetails();
+        for (OrderDetails orderDetails : listOrderDetails) {
+            Product product = productRepository.findById(orderDetails.getProductId()).get();
+            product.setQuantity(product.getQuantity()-orderDetails.getProductQuantity());
+            productRepository.save(product);
+        }
+        return new CommonResponse(HttpStatus.OK,new MessageResponse("SUCCESS"), null);
+
     }
 }
