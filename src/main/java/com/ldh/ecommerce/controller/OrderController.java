@@ -17,8 +17,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -100,7 +103,9 @@ public class OrderController {
         notification.setIdeReceiver(order.getUserId());
         notification.setContent("Your "+orderId+" order is delivering");
         notification.setType(2);
-
+        LocalDateTime ldt = LocalDateTime.now();
+        String createTime = DateTimeFormatter.ofPattern("MM-dd-yyyy", Locale.ENGLISH).format(ldt);
+        notification.setCreateTime(createTime);
         orderRepository.save(order);
         notificationRepository.save(notification);
         return new CommonResponse(HttpStatus.OK,new MessageResponse("SUCCESS"), null);
@@ -116,6 +121,10 @@ public class OrderController {
         notification.setContent("Customer received the "+ orderId +" order");
         notification.setIdeReceiver(order.getSellerId());
         notification.setType(3);
+        LocalDateTime ldt = LocalDateTime.now();
+        String createTime = DateTimeFormatter.ofPattern("MM-dd-yyyy", Locale.ENGLISH).format(ldt);
+        notification.setCreateTime(createTime);
+        notificationRepository.save(notification);
         orderRepository.save(order);
         List<OrderDetails> listOrderDetails = order.getOrderDetails();
         for (OrderDetails orderDetails : listOrderDetails) {
