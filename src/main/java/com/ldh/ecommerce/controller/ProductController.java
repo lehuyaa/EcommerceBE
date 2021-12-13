@@ -201,8 +201,8 @@ public class ProductController {
 
         }
     }
-    @PostMapping("/requestUpdateRate/{productId}/{shopId}")
-    public CommonResponse requestUpdateRate(@PathVariable("productId") Long productId, @PathVariable("shopId") Long shopId) {
+    @PostMapping("/requestUpdateRate/{productId}")
+    public CommonResponse requestUpdateRate(@PathVariable("productId") Long productId) {
 
         Notification notification = new Notification();
         notification.setIdeReceiver(21L);
