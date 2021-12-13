@@ -100,7 +100,7 @@ public class OrderController {
       Order order = orderRepository.findById(orderId).get();
       order.setStatusOrder( new StatusOrder(2L,"Shipping"));
         Notification notification = new Notification();
-        notification.setTitle("Order" + orderId +" is Shipping");
+        notification.setTitle("Order " + orderId +" is Shipping");
         notification.setIdeReceiver(order.getUserId());
         notification.setContent("Your "+orderId+" order is delivering");
         notification.setType(2);
