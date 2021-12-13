@@ -1,13 +1,10 @@
 package com.ldh.ecommerce.controller;
 
-import com.ldh.ecommerce.model.Order;
-import com.ldh.ecommerce.model.OrderDetails;
-import com.ldh.ecommerce.model.Product;
-import com.ldh.ecommerce.model.StatusOrder;
+import com.ldh.ecommerce.model.*;
+import com.ldh.ecommerce.repository.NotificationRepository;
 import com.ldh.ecommerce.repository.OrderDetailsRepository;
 import com.ldh.ecommerce.repository.OrderRepository;
 import com.ldh.ecommerce.repository.ProductRepository;
-import com.ldh.ecommerce.request.AddProductRequest;
 import com.ldh.ecommerce.request.OrderItemRequest;
 import com.ldh.ecommerce.request.OrderRequest;
 import com.ldh.ecommerce.request.ProductOrderRequest;
@@ -63,7 +60,8 @@ public class OrderController {
     public CommonResponse getOrderBySellerId (@PathVariable("sellerId") Long sellerId) {
         return new CommonResponse(HttpStatus.OK,new MessageResponse(""), orderServiceImp.getAllOrderBySellerId(sellerId));
     }
-
+    @Autowired
+    public NotificationRepository notificationRepository;
     @PostMapping("/order")
     public CommonResponse order(@RequestBody OrderRequest orderRequest) {
         StatusOrder statusOrder = new StatusOrder(1L,"Packing");
@@ -97,7 +95,14 @@ public class OrderController {
 
       Order order = orderRepository.findById(orderId).get();
       order.setStatusOrder( new StatusOrder(2L,"Shipping"));
+        Notification notification = new Notification();
+        notification.setTitle("Order" + orderId +" is Shipping");
+        notification.setIdeReceiver(order.getUserId());
+        notification.setContent("Your "+orderId+" order is delivering");
+        notification.setType(2);
+
         orderRepository.save(order);
+        notificationRepository.save(notification);
         return new CommonResponse(HttpStatus.OK,new MessageResponse("SUCCESS"), null);
 
     }
@@ -106,6 +111,11 @@ public class OrderController {
 
         Order order = orderRepository.findById(orderId).get();
         order.setStatusOrder( new StatusOrder(3L,"Success"));
+        Notification notification = new Notification();
+        notification.setTitle("Order "+orderId + " Success");
+        notification.setContent("Customer received the "+ orderId +" order");
+        notification.setIdeReceiver(order.getSellerId());
+        notification.setType(3);
         orderRepository.save(order);
         List<OrderDetails> listOrderDetails = order.getOrderDetails();
         for (OrderDetails orderDetails : listOrderDetails) {
@@ -115,5 +125,9 @@ public class OrderController {
         }
         return new CommonResponse(HttpStatus.OK,new MessageResponse("SUCCESS"), null);
 
+    }
+    @GetMapping("/getAllNotification")
+    public CommonResponse getAllProduct () {
+        return new CommonResponse(HttpStatus.OK,new MessageResponse(""), notificationRepository.findAll());
     }
 }

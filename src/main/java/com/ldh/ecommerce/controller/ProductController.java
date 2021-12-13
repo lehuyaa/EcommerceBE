@@ -1,13 +1,11 @@
 package com.ldh.ecommerce.controller;
 
 
+import com.ldh.ecommerce.model.Notification;
 import com.ldh.ecommerce.model.Product;
 import com.ldh.ecommerce.model.Review;
 import com.ldh.ecommerce.model.User;
-import com.ldh.ecommerce.repository.CategoryRepository;
-import com.ldh.ecommerce.repository.ProductRepository;
-import com.ldh.ecommerce.repository.ReviewRepository;
-import com.ldh.ecommerce.repository.UserRepository;
+import com.ldh.ecommerce.repository.*;
 import com.ldh.ecommerce.request.AddProductRequest;
 import com.ldh.ecommerce.request.ReviewRequest;
 import com.ldh.ecommerce.response.CommonResponse;
@@ -44,6 +42,8 @@ public class ProductController {
     @Autowired
     public ProductRepository productRepository;
 
+    @Autowired
+    public NotificationRepository notificationRepository;
 
     @GetMapping("/getAllProduct/{pageNo}")
     public CommonResponse getAllProduct (@PathVariable int pageNo) {
@@ -200,6 +200,19 @@ public class ProductController {
             return new CommonResponse(HttpStatus.OK, new MessageResponse("SUCCESS"), null);
 
         }
+    }
+    @PostMapping("/requestUpdateRate/{productId}/{shopId}")
+    public CommonResponse requestUpdateRate(@PathVariable("productId") Long productId, @PathVariable("shopId") Long shopId) {
+
+        Notification notification = new Notification();
+        notification.setIdeReceiver(21L);
+        notification.setTitle("Update Rate Product");
+        notification.setContent("Request Update Rate for ProductId:" + productId);
+        notification.setType(1);
+        notificationRepository.save(notification);
+        return new CommonResponse(HttpStatus.OK, new MessageResponse("SUCCESS"), null);
+
+
     }
 
 }
