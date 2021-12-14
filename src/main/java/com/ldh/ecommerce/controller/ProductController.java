@@ -45,10 +45,7 @@ public class ProductController {
     @Autowired
     public NotificationRepository notificationRepository;
 
-    @GetMapping("/getAllProduct/{pageNo}")
-    public CommonResponse getAllProduct (@PathVariable int pageNo) {
-        return new CommonResponse(HttpStatus.OK,new MessageResponse(""), productServiceImp.getAllProduct(pageNo));
-    }
+
     @Autowired
     private EntityManager entityManager;
 
@@ -56,6 +53,15 @@ public class ProductController {
     @Autowired
     private ProductSearch productSearch;
 
+    @GetMapping("/getAllProduct/{pageNo}")
+    public CommonResponse getAllProduct (@PathVariable int pageNo) {
+        return new CommonResponse(HttpStatus.OK,new MessageResponse(""), productServiceImp.getAllProduct(pageNo));
+    }
+
+    @GetMapping("/getRandomProduct/{userId}")
+    public CommonResponse getRandomProduct (@PathVariable Long userId) {
+        return new CommonResponse(HttpStatus.OK,new MessageResponse(""), productServiceImp.getRanDomProductByUserId(userId));
+    }
 
     @GetMapping("/search/{searchKey}")
     public CommonResponse search(@PathVariable("searchKey") String searchKey) {

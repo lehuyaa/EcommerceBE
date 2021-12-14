@@ -11,4 +11,5 @@ public interface ProductService {
     List<Product> getAllProduct(int pageNo);
     List<Product> getByUserId(Long userId);
     List<Product> getByCategoryId(Long categoryId);
+    List<Product> getRanDomProductByUserId(Long userId);
 }

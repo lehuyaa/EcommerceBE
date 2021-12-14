@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
@@ -54,5 +56,17 @@ public class ProductServiceImp implements ProductService {
         products.clear();
         products = productRepository.findAllByCategoryId(categoryId);
         return products;
+    }
+
+    @Override
+    public List<Product> getRanDomProductByUserId(Long userId) {
+        products.clear();
+        products = productRepository.findAllByUserId(userId);
+        Random rand = new Random();
+        List<Product> randomList = new ArrayList<>();
+        for (int i = 0 ; i < 5 ; i++){
+            randomList.add(products.remove(rand.nextInt(products.size())));
+        }
+        return randomList;
     }
 }
