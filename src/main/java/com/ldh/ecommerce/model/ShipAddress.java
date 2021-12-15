@@ -19,6 +19,9 @@ public class ShipAddress {
     @Column(name = "city")
     private String city;
 
+    @Column(name = "district")
+    private String district;
+
     @Column(name = "zipCode")
     private String zipCode;
 
@@ -31,6 +34,15 @@ public class ShipAddress {
     @Column(name = "location")
     private int location;
     public ShipAddress() {
+    }
+
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
     }
 
     public int getLocation() {

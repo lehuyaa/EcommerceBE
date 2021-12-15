@@ -5,6 +5,7 @@ public class AddShipAddressRequest {
     private String nameReceiver;
     private String streetAddress;
     private String city;
+    private String district;
     private String zipCode;
     private String phoneNumber;
     private Long user_id;
@@ -24,6 +25,14 @@ public class AddShipAddressRequest {
 
     public void setLocation(int location) {
         this.location = location;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
     }
 
     public String getStreetAddress() {

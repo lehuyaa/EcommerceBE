@@ -48,6 +48,7 @@ public class ShipAddressController {
             shipAddress.setNameReceiver(addShipAddressRequest.getNameReceiver());
             shipAddress.setStreetAddress(addShipAddressRequest.getStreetAddress());
             shipAddress.setCity(addShipAddressRequest.getCity());
+            shipAddress.setDistrict(addShipAddressRequest.getDistrict());
             shipAddress.setPhoneNumber(addShipAddressRequest.getPhoneNumber());
             shipAddress.setUserId(addShipAddressRequest.getUser_id());
             shipAddress.setZipCode(addShipAddressRequest.getZipCode());
