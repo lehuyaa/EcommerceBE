@@ -1,5 +1,8 @@
 package com.ldh.ecommerce.model;
 
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -42,6 +45,11 @@ public class User {
     @Column(name = "phonenumber")
     private String phoneNumber;
 
+    @ManyToOne
+    @JoinColumn(name = "shopAddress_id")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private ShipAddress shopAddress;
 
     public String getFirstName() {
         return firstName;
@@ -89,6 +97,14 @@ public class User {
         this.lastName = lastName;
     }
 
+
+    public ShipAddress getShopAddress() {
+        return shopAddress;
+    }
+
+    public void setShopAddress(ShipAddress shopAddress) {
+        this.shopAddress = shopAddress;
+    }
 
     public Long getId() {
         return id;
