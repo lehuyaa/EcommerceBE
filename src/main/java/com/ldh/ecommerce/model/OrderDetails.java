@@ -28,6 +28,8 @@ public class OrderDetails {
     @Column(name = "orderId")
     private Long orderId;
 
+    @Column(name = "location")
+    private int location;
     @Column(name = "total")
     private Long total;
 
@@ -51,6 +53,14 @@ public class OrderDetails {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public int getLocation() {
+        return location;
+    }
+
+    public void setLocation(int location) {
+        this.location = location;
     }
 
     public Long getProductId() {

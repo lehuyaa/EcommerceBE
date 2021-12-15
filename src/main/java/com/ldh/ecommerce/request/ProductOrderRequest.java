@@ -9,10 +9,18 @@ public class ProductOrderRequest {
     private String productName;
     private Long productPrice;
     private Long quantity;
-
+    private int location;
 
     public Long getId() {
         return id;
+    }
+
+    public int getLocation() {
+        return location;
+    }
+
+    public void setLocation(int location) {
+        this.location = location;
     }
 
     public void setId(Long id) {

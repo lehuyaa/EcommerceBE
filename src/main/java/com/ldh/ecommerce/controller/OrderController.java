@@ -86,6 +86,7 @@ public class OrderController {
                orderDetails.setProductImage(productOrderRequest.getProductImage());
                orderDetails.setProductPrice(Long.toString(productOrderRequest.getProductPrice()));
                orderDetails.setProductQuantity(productOrderRequest.getQuantity());
+               orderDetails.setLocation(productOrderRequest.getLocation());
                orderDetails.setOrderId(order.getId());
                orderDetails.setTotal(productOrderRequest.getQuantity() * productOrderRequest.getProductPrice());
                orderDetailsRepository.save(orderDetails);
