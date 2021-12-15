@@ -28,7 +28,17 @@ public class ShipAddress {
     @Column(name = "userId")
     private Long userId;
 
+    @Column(name = "location")
+    private int location;
     public ShipAddress() {
+    }
+
+    public int getLocation() {
+        return location;
+    }
+
+    public void setLocation(int location) {
+        this.location = location;
     }
 
     public Long getId() {

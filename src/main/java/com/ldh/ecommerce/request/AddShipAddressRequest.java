@@ -8,6 +8,7 @@ public class AddShipAddressRequest {
     private String zipCode;
     private String phoneNumber;
     private Long user_id;
+    private int location;
 
     public String getNameReceiver() {
         return nameReceiver;
@@ -15,6 +16,14 @@ public class AddShipAddressRequest {
 
     public void setNameReceiver(String nameReceiver) {
         this.nameReceiver = nameReceiver;
+    }
+
+    public int getLocation() {
+        return location;
+    }
+
+    public void setLocation(int location) {
+        this.location = location;
     }
 
     public String getStreetAddress() {

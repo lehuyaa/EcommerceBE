@@ -51,6 +51,7 @@ public class ShipAddressController {
             shipAddress.setPhoneNumber(addShipAddressRequest.getPhoneNumber());
             shipAddress.setUserId(addShipAddressRequest.getUser_id());
             shipAddress.setZipCode(addShipAddressRequest.getZipCode());
+            shipAddress.setLocation(addShipAddressRequest.getLocation());
             shipAddressRepository.save(shipAddress);
             return new CommonResponse(HttpStatus.OK, new MessageResponse("SCUCESS"), null);
 
@@ -71,6 +72,8 @@ public class ShipAddressController {
             shipAddress.setPhoneNumber(addShipAddressRequest.getPhoneNumber());
             shipAddress.setUserId(addShipAddressRequest.getUser_id());
             shipAddress.setZipCode(addShipAddressRequest.getZipCode());
+            shipAddress.setLocation(addShipAddressRequest.getLocation());
+
             shipAddressRepository.save(shipAddress);
 
             return new CommonResponse(HttpStatus.OK, new MessageResponse("SUCCESS"), null);

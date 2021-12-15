@@ -14,7 +14,11 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private User user;
 
     private Long sellerId;
 
@@ -43,11 +47,7 @@ public class Order {
     public Order() {
     }
 
-    public Order(Long id, Long userId, Long sellerId) {
-        this.id = id;
-        this.userId = userId;
-        this.sellerId = sellerId;
-    }
+
 
     public Long getId() {
         return id;
@@ -89,12 +89,12 @@ public class Order {
         this.orderDetails = orderDetails;
     }
 
-    public Long getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Long getSellerId() {

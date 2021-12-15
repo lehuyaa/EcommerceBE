@@ -1,14 +1,12 @@
 package com.ldh.ecommerce.controller;
 
 import com.ldh.ecommerce.model.*;
-import com.ldh.ecommerce.repository.NotificationRepository;
-import com.ldh.ecommerce.repository.OrderDetailsRepository;
-import com.ldh.ecommerce.repository.OrderRepository;
-import com.ldh.ecommerce.repository.ProductRepository;
+import com.ldh.ecommerce.repository.*;
 import com.ldh.ecommerce.request.OrderItemRequest;
 import com.ldh.ecommerce.request.OrderRequest;
 import com.ldh.ecommerce.request.ProductOrderRequest;
 import com.ldh.ecommerce.response.CommonResponse;
+import com.ldh.ecommerce.response.InfoProductOrder;
 import com.ldh.ecommerce.response.MessageResponse;
 import com.ldh.ecommerce.service.imp.OrderServiceImp;
 import com.ldh.ecommerce.service.imp.PaymentMethodServiceImp;
@@ -41,6 +39,9 @@ public class OrderController {
     public OrderDetailsRepository orderDetailsRepository;
 
     @Autowired
+    public UserRepository userRepository;
+
+    @Autowired
     public ProductRepository productRepository;
     @Autowired
     public OrderRepository orderRepository;
@@ -71,7 +72,8 @@ public class OrderController {
         StatusOrder statusOrder = new StatusOrder(1L,"Packing");
        for (OrderItemRequest orderItemRequest : orderRequest.getListSeller()) {
            Order order = new Order();
-           order.setUserId(orderRequest.getUserID());
+           User user = userRepository.findById(orderRequest.getUserID()).get();
+           order.setUser(user);
            order.setSellerId(orderItemRequest.getIdSeller());
            order.setPayment(orderRequest.getPayment());
            order.setShipAddress(orderRequest.getAddress());
@@ -101,7 +103,7 @@ public class OrderController {
       order.setStatusOrder( new StatusOrder(2L,"Shipping"));
         Notification notification = new Notification();
         notification.setTitle("Order " + orderId +" is Shipping");
-        notification.setIdeReceiver(order.getUserId());
+        notification.setIdeReceiver(order.getUser().getId());
         notification.setContent("Your "+orderId+" order is delivering");
         notification.setType(2);
         Date myDate = new Date();
@@ -138,4 +140,57 @@ public class OrderController {
     public CommonResponse getAllProduct () {
         return new CommonResponse(HttpStatus.OK,new MessageResponse(""), notificationRepository.findAll());
     }
+
+    public boolean containArray(List<InfoProductOrder> infoProductOrderList, Long id) {
+        for (InfoProductOrder infoProductOrder : infoProductOrderList) {
+            if (infoProductOrder.getProductId() == id) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public int findIndex(List<InfoProductOrder> infoProductOrderList, Long id) {
+        for(int i = 0 ; i < infoProductOrderList.size() ; i ++) {
+            if (infoProductOrderList.get(i).getProductId() == id) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    @GetMapping("/getInfoAllOrderBySellerId/{sellerId}")
+    public CommonResponse getInfoAllOrderBySellerId (@PathVariable("sellerId") Long sellerId) {
+        List<Order> orderList = orderRepository.findAllBySellerId(sellerId);
+        List<InfoProductOrder> infoProductOrderList = new ArrayList<>();
+        for (Order order : orderList) {
+            String nameSeller = order.getUser().getUsername();
+            for (OrderDetails orderDetails : order.getOrderDetails()) {
+                if (containArray(infoProductOrderList,orderDetails.getProductId())) {
+                    int index = findIndex(infoProductOrderList,orderDetails.getProductId());
+                    InfoProductOrder infoProductOrder = infoProductOrderList.get(index);
+                    infoProductOrder.setTotal(infoProductOrder.getTotal() + orderDetails.getTotal());
+                    infoProductOrder.setProductQuantity(infoProductOrder.getProductQuantity() + orderDetails.getProductQuantity());
+                    List<String> listSeller = infoProductOrder.getListUser();
+                    listSeller.add(nameSeller);
+                    infoProductOrder.setListUser(listSeller);
+                    infoProductOrderList.set(index, infoProductOrder);
+                }else {
+                    InfoProductOrder infoProductOrder2 = new InfoProductOrder();
+                    infoProductOrder2.setProductId(orderDetails.getProductId());
+                    infoProductOrder2.setProductName(orderDetails.getProductName());
+                    infoProductOrder2.setProductQuantity(orderDetails.getProductQuantity());
+                    infoProductOrder2.setTotal(orderDetails.getTotal());
+                    infoProductOrder2.setProductImage(orderDetails.getProductImage());
+                    List<String> listSeller = new ArrayList<>();
+                    listSeller.add(nameSeller);
+                    infoProductOrder2.setListUser(listSeller);
+                    infoProductOrderList.add(infoProductOrder2);
+                }
+            }
+        }
+        return new CommonResponse(HttpStatus.OK,new MessageResponse(""), infoProductOrderList);
+
+    }
+
 }
