@@ -6,6 +6,7 @@ import com.ldh.ecommerce.model.Product;
 import com.ldh.ecommerce.model.Review;
 import com.ldh.ecommerce.model.User;
 import com.ldh.ecommerce.repository.*;
+import com.ldh.ecommerce.request.AddMultiProduct;
 import com.ldh.ecommerce.request.AddProductRequest;
 import com.ldh.ecommerce.request.ReviewRequest;
 import com.ldh.ecommerce.response.CommonResponse;
@@ -95,6 +96,23 @@ public class ProductController {
             return new CommonResponse(HttpStatus.OK, new MessageResponse("SUCCESS"), null);
 
         }
+    }
+    @PostMapping("/addMultiProduct")
+    public CommonResponse addMultiProduct(@RequestBody AddMultiProduct addMultiProduct) {
+
+       for (AddProductRequest addProductRequest : addMultiProduct.getListProduct()) {
+           Product product = new Product();
+
+           product.setProductName(addProductRequest.getProduct_name());
+           product.setProductPrice(addProductRequest.getProduct_price()+"  ");
+           product.setProductImage(addProductRequest.getProduct_image());
+           product.setCategory(categoryRepository.findById(addProductRequest.getCategory_id()).get());
+           product.setUser(userRepository.findById(addProductRequest.getUser_id()).get());
+           product.setQuantity(addProductRequest.getQuantity());
+           product.setRate(0L);
+           productRepository.save(product);
+       }
+        return new CommonResponse(HttpStatus.OK, new MessageResponse("SUCCESS"), null);
     }
 
     @PutMapping("/editProduct/{idProduct}")

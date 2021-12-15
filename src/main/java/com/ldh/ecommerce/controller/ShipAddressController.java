@@ -53,7 +53,7 @@ public class ShipAddressController {
             shipAddress.setZipCode(addShipAddressRequest.getZipCode());
             shipAddress.setLocation(addShipAddressRequest.getLocation());
             shipAddressRepository.save(shipAddress);
-            return new CommonResponse(HttpStatus.OK, new MessageResponse("SCUCESS"), null);
+            return new CommonResponse(HttpStatus.OK, new MessageResponse("SUCCESS"), null);
 
         }
     }
