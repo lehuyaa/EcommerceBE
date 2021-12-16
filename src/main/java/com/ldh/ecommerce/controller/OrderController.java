@@ -78,6 +78,7 @@ public class OrderController {
            order.setPayment(orderRequest.getPayment());
            order.setShipAddress(orderRequest.getAddress());
            order.setStatusOrder(statusOrder);
+           order.setCreateTime(orderRequest.getCreateTime());
            List<OrderDetails> listOrderDetails = new ArrayList<>();
            for (ProductOrderRequest productOrderRequest : orderItemRequest.getListProduct()){
                OrderDetails orderDetails = new OrderDetails();

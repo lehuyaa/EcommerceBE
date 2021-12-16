@@ -22,6 +22,7 @@ public class Order {
 
     private Long sellerId;
 
+    private String createTime;
     @ManyToOne
     @JoinColumn(name = "payment_id")
     @EqualsAndHashCode.Exclude
@@ -48,6 +49,13 @@ public class Order {
     }
 
 
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
 
     public Long getId() {
         return id;

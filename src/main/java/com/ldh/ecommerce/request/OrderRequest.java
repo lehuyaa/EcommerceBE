@@ -11,9 +11,18 @@ public class OrderRequest {
     private Payment payment;
     private List<OrderItemRequest> listSeller;
     private Long userID;
+    private String createTime;
 
     public ShipAddress getAddress() {
         return address;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
     }
 
     public void setAddress(ShipAddress address) {
