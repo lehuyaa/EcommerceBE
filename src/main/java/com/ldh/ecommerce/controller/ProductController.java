@@ -59,9 +59,9 @@ public class ProductController {
         return new CommonResponse(HttpStatus.OK,new MessageResponse(""), productServiceImp.getAllProduct(pageNo));
     }
 
-    @GetMapping("/getRandomProduct/{userId}")
-    public CommonResponse getRandomProduct (@PathVariable Long userId) {
-        return new CommonResponse(HttpStatus.OK,new MessageResponse(""), productServiceImp.getRanDomProductByUserId(userId));
+    @GetMapping("/getRandomProduct/{categoryId}")
+    public CommonResponse getRandomProduct (@PathVariable Long categoryId) {
+        return new CommonResponse(HttpStatus.OK,new MessageResponse(""), productServiceImp.getRanDomProductByCategoryId(categoryId));
     }
 
     @GetMapping("/search/{searchKey}")

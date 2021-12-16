@@ -59,9 +59,9 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public List<Product> getRanDomProductByUserId(Long userId) {
+    public List<Product> getRanDomProductByCategoryId(Long categoryId) {
         products.clear();
-        products = productRepository.findAllByUserId(userId);
+        products = productRepository.findAllByCategoryId(categoryId);
         Random rand = new Random();
         List<Product> randomList = new ArrayList<>();
         for (int i = 0 ; i < 5 ; i++){
